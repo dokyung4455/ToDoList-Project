@@ -58,20 +58,49 @@ public class TodoServiceImplV1 implements TodoService {
 
 	@Override
 	public TodoVO findById(String li_seq) {
-		// TODO Auto-generated method stub
+		// TODO 입력한 seq번호로 찾기
+		String sql = " SELECT * FROM tbl_list ";
+		sql += " WHERE li_seq = ? ";
+		PreparedStatement pStr = null;
+		try {
+			pStr = dbConn.prepareStatement(sql);
+			pStr.setString(1, li_seq);
+			List<TodoVO> tdList = this.select(pStr);
+			pStr.close();
+			if(tdList != null && tdList.size() > 0) {
+				System.out.println(tdList.toString());
+				return tdList.get(0);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
 		return null;
 	}
 
 	@Override
 	public List<TodoVO> findByDate(String li_date) {
-		// TODO Auto-generated method stub
+		// TODO 입력한 날짜에 속하는 데이터 찾기
+		String sql = " SELECT * FROM tbl_list ";
+		sql += " WHERE li_date = ? ";
+		PreparedStatement pStr = null;
+		try {
+			pStr = dbConn.prepareStatement(sql);
+			pStr.setString(1, li_date);
+			List<TodoVO> tdList = this.select(pStr);
+			pStr.close();
+			return tdList;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public Integer insert(TodoVO vo) {
 		// TODO 데이터 추가하기
-		System.out.println("여기는 insert");
 		String sql = " INSERT INTO tbl_list ";
 		sql += " (";
 		sql += " li_todo, ";
@@ -100,12 +129,50 @@ public class TodoServiceImplV1 implements TodoService {
 	@Override
 	public Integer update(TodoVO vo) {
 		// TODO Auto-generated method stub
+		String sql = " UPDATE tbl_list SET ";
+		sql += " li_todo = ?, ";
+		sql += " li_date = ?, ";
+		sql += " li_time = ?, ";
+		sql += " li_place = ? ";
+		sql += " WHERE li_seq = ? ";
+		System.out.println(vo.toString());
+		PreparedStatement pStr = null;
+		try {
+			pStr = dbConn.prepareStatement(sql);
+			pStr.setString(1, vo.getLi_todo());
+			pStr.setString(2, vo.getLi_date());
+			pStr.setString(3, vo.getLi_time());
+			pStr.setString(4, vo.getLi_place());
+			pStr.setLong(5, vo.getLi_seq());
+			
+			return pStr.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
 		return null;
 	}
 
 	@Override
 	public Integer delete(Long li_seq) {
 		// TODO Auto-generated method stub
+		String sql = " DELETE FROM tbl_list ";
+		sql += " WHERE li_seq = ? ";
+		
+		PreparedStatement pStr = null;
+		try {
+			pStr = dbConn.prepareStatement(sql);
+			pStr.setLong(1, li_seq);
+			return pStr.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
 		return null;
 	}
 

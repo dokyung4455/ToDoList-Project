@@ -29,11 +29,6 @@ public class HomeController extends HttpServlet{
 		ReqController.forward(req, resp, "home");
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-
-	}
 
 	
 	
